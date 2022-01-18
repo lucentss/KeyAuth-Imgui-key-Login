@@ -12,6 +12,28 @@ MIGHT NOT HELP NOT MY VIDEO
 
 Just a base dosent look pretty
 
+
+**Run**
+**In**
+**Release 64x**
+
+
+
+How to do it:
+
+Download the libs.rar from KeyAuth.com ( https://github.com/KeyAuth/KeyAuth-CPP-Example/blob/main/libs.zip )
+
+Extract libs.rar into the folder
+
+open the .sln file
+
+change to Release mode and x64
+
+Change your Secret,Owner id etc. (found on KeyAuth)
+
+build it!
+
+
 Project settings
 https://media.discordapp.net/attachments/927012865712484372/932890231311564800/Untitled.png?width=720&height=497
 https://media.discordapp.net/attachments/927012865712484372/932890448916271114/Untitled.png?width=720&height=499
