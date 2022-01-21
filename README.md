@@ -21,9 +21,8 @@ Just a base dosent look pretty
 
 How to do it:
 
-Download the libs.rar from KeyAuth.com ( https://github.com/KeyAuth/KeyAuth-CPP-Example/blob/main/libs.zip )
-
-Extract libs.rar into the folder
+To fix this error
+Property page > C/C++ > Optimization > Whole program Optimization > No
 
 open the .sln file
 
