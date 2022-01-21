@@ -10,6 +10,13 @@ MIGHT NOT HELP NOT MY VIDEO
 Video to use Web Loader (control loader from customer panel) https://youtu.be/9-qgmsUUCK4
 MIGHT NOT HELP NOT MY VIDEO
 
+
+If you need help join the discord
+
+https://discord.gg/bR5zdvXaVU
+
+lucent.vip#7537
+
 Just a base dosent look pretty
 
 
