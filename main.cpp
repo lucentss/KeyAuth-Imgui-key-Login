@@ -29,9 +29,9 @@ IDirect3DTexture9* masterlogo;
 using namespace KeyAuth;
 
 
-std::string name = XorStr("lucent"); //Application name found in application settings
-std::string ownerid = XorStr("XA0MqJR49X"); //Owner ID Found in user settings
-std::string secret = XorStr("c688801b13689f432c3b9afe540898cb22d2aee2e39a15841126e84dbf397bf6"); //Application secret found in Application settings
+std::string name = XorStr(""); //Application name found in application settings
+std::string ownerid = XorStr(""); //Owner ID Found in user settings
+std::string secret = XorStr(""); //Application secret found in Application settings
 std::string version = XorStr("1.0"); // Version can be changed but is not really important
 
 api KeyAuthApp(name, ownerid, secret, version);
