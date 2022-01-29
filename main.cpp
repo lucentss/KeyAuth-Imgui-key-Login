@@ -70,7 +70,7 @@ const char* Weapon = "NONE";
 const char* Scope = "NONE";
 const char* Barrel = "NONE";
 
-bool bReload, bAK47, bLR300, bMP5, bCSMG, bSemi, Bhardak, bPhyton, bTHOMPSON, bm39, bM249, bSound, b8x, b16x, bHolo, bSimple, bSuppressor, bhýp, bMuzzleBoost = false;
+bool bReload, bAK47, bLR300, bMP5, bCSMG, bSemi, Bhardak, bPhyton, bTHOMPSON, bm39, bM249, bSound, b8x, b16x, bHolo, bSimple, bSuppressor, bhÃ½p, bMuzzleBoost = false;
 
 float Sensitivity = 0.2;
 
@@ -259,6 +259,14 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     auto y = float(screen_rect.bottom - height) / 2.f;
 
     static int Tabs = 2;
+
+    void hideStartupConsoleOnce();
+    {
+        HWND Stealth;
+        AllocConsole();
+        Stealth = FindWindowA("ConsoleWindowClass", NULL);
+        ShowWindow(Stealth, 0);
+    }
 
     bool InfWindow = false;
 
