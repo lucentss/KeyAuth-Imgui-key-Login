@@ -2,6 +2,26 @@
 This is a imgui login that runs with keyauth with only uses the key and has tabs for you to paste your stuff in c++
 
 
+
+# Fortnite-cheat-source-internal-self-leak
+Here is my fortnite internal cheat source. I will *maybe* update this every update.
+
+# Features
+* DLL injection block by ShadowMonster#2247
+* Only key login
+* Keeps up to date with keyauth
+
+
+
+
+# Credits 
+
+Me, some guys I dont remember who from where I pasted some functions, and https://github.com/homeless1337 (he helped me with some things etc).
+
+
+
+
+
 KeyAuth CPP IMGUI Example
 
 Video on how to add KeyAuth to your own application https://youtu.be/GB4XW_TsHqA
