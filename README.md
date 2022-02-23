@@ -3,8 +3,6 @@ This is a imgui login that runs with keyauth with only uses the key and has tabs
 
 
 
-# Fortnite-cheat-source-internal-self-leak
-Here is my fortnite internal cheat source. I will *maybe* update this every update.
 
 # Features
 * DLL injection block by ShadowMonster#2247
