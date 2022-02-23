@@ -64,18 +64,7 @@ bool LoginCheck = false;
 #define _WIN32_WINNT 0x0500
 
 
-using namespace std;
 
-const char* Weapon = "NONE";
-const char* Scope = "NONE";
-const char* Barrel = "NONE";
-
-bool bReload, bAK47, bLR300, bMP5, bCSMG, bSemi, Bhardak, bPhyton, bTHOMPSON, bm39, bM249, bSound, b8x, b16x, bHolo, bSimple, bSuppressor, bhýp, bMuzzleBoost = false;
-
-float Sensitivity = 0.2;
-
-
-using namespace std;
 
 
 #include <stdlib.h>
