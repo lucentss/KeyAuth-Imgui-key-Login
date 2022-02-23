@@ -37,8 +37,9 @@ std::string name = XorStr(""); //Application name found in application settings
 std::string ownerid = XorStr(""); //Owner ID Found in user settings
 std::string secret = XorStr(""); //Application secret found in Application settings
 std::string version = XorStr("1.0"); // Version can be changed but is not really important
-
-api KeyAuthApp(name, ownerid, secret, version);
+std::string url = "https://keyauth.win/api/1.1/"; // change if you're self-hosting
+std::string sslPin = "ssl pin key (optional)"; // don't change unless you intend to pin public certificate key. you can get here in the "Pin SHA256" field https://www.ssllabs.com/ssltest/analyze.html?d=ke
+api KeyAuthApp(name, ownerid, secret, version, url, sslPin);
 
 
 
