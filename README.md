@@ -13,9 +13,6 @@ This is a imgui login that runs with keyauth with only uses the key and has tabs
 
 
 
-# Credits 
-
-Me, some guys I dont remember who from where I pasted some functions, and https://github.com/homeless1337 (he helped me with some things etc).
 
 
 
