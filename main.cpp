@@ -19,7 +19,11 @@
 #include <random>
 
 
+#include <Psapi.h>
+#include <chrono>
+#include <future>
 
+#pragma comment(lib, "psapi.lib")
 
 IDirect3DTexture9* masterlogo;
 
@@ -51,32 +55,88 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 
-
-
 bool LoginCheck = false;
 
+typedef NTSTATUS(WINAPI* lpQueryInfo)(HANDLE, LONG, PVOID, ULONG, PULONG);
 
+//all over the internet, i didnt make this
+PVOID DetourFunc(BYTE* src, const BYTE* dst, const int len)
+{
+    BYTE* jmp = (BYTE*)malloc(len + 5); DWORD dwback;
+    VirtualProtect(src, len, PAGE_EXECUTE_READWRITE, &dwback);
+    memcpy(jmp, src, len); jmp += len; jmp[0] = 0xE9;
 
-#pragma comment(lib,"Wininet.lib")
+    *(DWORD*)(jmp + 1) = (DWORD)(src + len - jmp) - 5; src[0] = 0xE9;
+    *(DWORD*)(src + 1) = (DWORD)(dst - src) - 5;
 
-#pragma comment(lib, "winmm.lib")
+    VirtualProtect(src, len, dwback, &dwback);
+    return (jmp - len);
+}
 
-#define _WIN32_WINNT 0x0500
+//not proper way to detour, but since we arent continuing thread context we dont return context.
+//to continue thread execution after detour do something like this I think
+//void CaptureThread(PCONTEXT context, PVOID arg1, PVOID arg2)
+//return (new ldrThunk) -> Thunk name(PCONTEXT context, PVOID arg1, PVOID arg2) <- current thread context.
 
+void CaptureThread()
+{
+    //getting thread start address isnt needed, it just gives extra information on the thread stack which allows you to see some potential injection methods used
+    auto ThreadStartAddr = [](HANDLE hThread) -> DWORD {
 
+        //Hook NtQueryInformationThread
+        lpQueryInfo ThreadInformation = (lpQueryInfo)GetProcAddress(GetModuleHandle("ntdll.dll"), "NtQueryInformationThread");
 
+        DWORD StartAddress;
+        //Get information from current thread handle
+        ThreadInformation(hThread, 9, &StartAddress, sizeof(DWORD), NULL);
 
+        return StartAddress;
+    };
 
-#include <stdlib.h>
+    //Gets handle of current thread. (HANDLE)(LONG_PTR)-1 is handle of CurrentProcess if you need it
+    HANDLE CurrentThread = (HANDLE)(LONG_PTR)-2;
+    //Gets thread information from thread handle.
+    DWORD  StartAddress = ThreadStartAddr(CurrentThread);
 
-#ifdef _WIN32
-#define WINPAUSE system("pause")
-#endif
+    //address 0x7626B0E0 is a static address which is assigned to exit thread of the application
+    //we need to whitelist it otherwise you cant close the application from usermode
+    if (StartAddress != 0x7626B0E0) {
+        printf("\n[+] Block [TID: %d][Start Address: %p]", (DWORD)GetThreadId(CurrentThread), (CHAR*)StartAddress);
+        //Exits thread and stops potential code execution
+        //if you dont term thread it will crash if you dont handle context properly
+        if (!TerminateThread(CurrentThread, 0xC0C)) exit(0);
+    }
+    else exit(0);
+}
 
+BOOL HookLdrInitializeThunk()
+{
+    //Gets handle of ntdll.dll in the current process, which allows us to detour LdrInitializeThunk calls in given context
+    HMODULE hModule = LoadLibraryA("ntdll.dll");
+    if (hModule && (PBYTE)GetProcAddress(hModule, reinterpret_cast<LPCSTR>("LdrInitializeThunk")))
+    {
+        DetourFunc((PBYTE)GetProcAddress(hModule, "LdrInitializeThunk"), (PBYTE)CaptureThread, 5);
+        return TRUE;
+    }
+    else return FALSE;
+}
 
+//you can also hook RtlGetFullPathName_U to get path of module loaded, but it was not worth it because 
+//RtlGetFullPathName_U only get path after module was loaded which can be a insecurity (maybe).
+//though hooking RtlGetFullPathName_U doesnt point to the right location on some manual map injectors but it works for Xenos and AlisAlias injector
 
+// This was made by ShadowMonster#2247 So credit to him
 
+int AntiCrack()
+{
+    //Havent tested all kernel injection methods
+    if (HookLdrInitializeThunk()) printf("[+] Hook Success");
+    else printf("[-] Hook Failed");
 
+    std::promise<void>().get_future().wait();
+
+    return 0;
+}
 
 
 int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -323,8 +383,9 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                         }
 
 
-
-
+                        //Maybe add it as a clickable link like the real one
+                        ImGui::SetCursorPos({ 267.f, 270.f });
+                        ImGui::Text("Lucent.vip");
 
                         if (ImGui::Button("Login##Log", ImVec2(201, 27)))
                         {
@@ -343,10 +404,8 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 
-                            //Maybe add it as a clickable link like the real one
 
-                            ImGui::SetCursorPos({ 267.f, 270.f });
-                            ImGui::Text("Lucent.vip");
+                            
                         }
                     }
                 }
@@ -417,26 +476,7 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                                 auto x = float(screen_rect.right - width) / 2.f;
                                 auto y = float(screen_rect.bottom - height) / 2.f;
 
-                                ImGui::SetNextWindowPos(ImVec2(x, y), ImGuiCond_Once);
-                                ImGui::SetNextWindowSize(ImVec2(200, 70));
-                                ImGui::Begin("More User info!", &loader_active, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar);
-                                {
-                                    ImGui::Columns(1, NULL, true);
-                                    {
-                                        ImGui::Text("Username : %s", KeyAuthApp.user_data.username);
 
-                                        //This my cause an error if yes just add #define _CRT_SECURE_NO_WARNINGS under the includes or search it up on google
-
-                                       
-                                        if (x != (std::time_t)(-1) && y != (std::time_t)(-1))
-                                        {
-                                            double difference = std::difftime(y, x) / (60 * 60 * 24);
-                                            ImGui::Text("%f day(s) left", difference);
-                                        }
-
-                                        ImGui::EndChild();
-                                    }
-                                }
                                 ImGui::End();
                             }
                             if (switchTabs == 2) {
