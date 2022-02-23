@@ -59,10 +59,3 @@ change to Release mode and x64
 Change your Secret,Owner id etc. (found on KeyAuth)
 
 build it!
-
-
-Project settings
-https://media.discordapp.net/attachments/927012865712484372/932890231311564800/Untitled.png?width=720&height=497
-https://media.discordapp.net/attachments/927012865712484372/932890448916271114/Untitled.png?width=720&height=499
-https://media.discordapp.net/attachments/927012865712484372/932890631074889748/da.png?width=720&height=498
-https://media.discordapp.net/attachments/927012865712484372/932890631284588584/lol.png?width=720&height=497
