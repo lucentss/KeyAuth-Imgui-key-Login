@@ -10,6 +10,7 @@ Here is my fortnite internal cheat source. I will *maybe* update this every upda
 * DLL injection block by ShadowMonster#2247
 * Only key login
 * Keeps up to date with keyauth
+* Has a menu for after login
 
 
 
